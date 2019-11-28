@@ -6,10 +6,16 @@ services:
     restart: always
     volumes:
       - ./:/var/www/
+    entrypoint: dockerize -template ./.docker/app/.env:.env -wait tcp://db:3306 -timeout 40s ./.docker/entrypoint.sh
+    environment:
+      - DB_HOST=db
+      - DB_DATABASE=laravel
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
     depends_on:
       - db
       - redis
-    networks: 
+    networks:
       - network-app
 
   db:
@@ -21,12 +27,12 @@ services:
     ports:
       - "3306:3306"
     environment:
-      - MYSQL_DATABASE=blog
+      - MYSQL_DATABASE=laravel
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_USER=root
     volumes:
     - "./.docker/dbdata:/var/lib/mysql"
-    networks: 
+    networks:
       - network-app
 
   nginx:
@@ -37,7 +43,7 @@ services:
       - "8000:80"
     volumes:
       - ./:/var/www
-    networks: 
+    networks:
       - network-app
     depends_on:
       - app
@@ -46,8 +52,8 @@ services:
     image: redis:alpine
     expose:
       - 6379
-    networks: 
+    networks:
       - network-app
-networks: 
+networks:
   network-app:
     driver: bridge
