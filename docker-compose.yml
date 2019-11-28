@@ -41,6 +41,10 @@ services:
     tty: true
     ports:
       - "8000:80"
+    environment:
+      - PHP_FPM_HOST=app
+      - PHP_FPM_PORT=9000
+    entrypoint: ./.docker/nginx/entrypoint.sh
     volumes:
       - ./:/var/www
     networks:

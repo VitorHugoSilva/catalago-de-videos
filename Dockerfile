@@ -1,5 +1,5 @@
 FROM php:7.3.6-fpm-alpine3.9
-RUN apk add --no-cache openssl bash nodejs npm postgresql-dev openssl bash mysql-client nodejs npm alpine-sdk vim
+RUN apk add --no-cache openssl bash nodejs npm postgresql-dev mysql-client alpine-sdk vim
 RUN docker-php-ext-install bcmath pdo pdo_mysql
 
 ENV DOCKERIZE_VERSION v0.6.1
