@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: app
@@ -17,7 +17,7 @@ spec:
         image: img-app-deployment
         command: ["/bin/sh", "-c", "ln -s /var/www /usr/share/nginx; /var/www/k8s/entrypoint.sh; php-fpm"]
         ports:
-        - containerPorts: 80
+        - containerPort: 80
         env:
         - name: DB_PASSWORD
           valueFrom:
@@ -28,8 +28,8 @@ spec:
         - configMapRef:
             name: app-conf
         volumeMounts:
-        - name: app-conf
-          mountPath: /var/www/.env
+        - mountPath: /var/www/.env
+          name: app-conf
           subPath: .env
       volumes:
       - name: app-conf
