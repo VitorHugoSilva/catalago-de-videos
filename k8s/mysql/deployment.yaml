@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: mysql-server
 spec: # spec do deployment
-  replicas: 3
   selector: # selector utilizado para criar o svc
     matchLabels:
       app: mysql-server
