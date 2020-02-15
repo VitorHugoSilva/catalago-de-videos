@@ -44,4 +44,12 @@ steps:
         sed 's#img-app-deployement#gcr.io/$PROJECT_ID/app-laravel:$SHORT_SHA#g' k8s/app/deployement.yaml > k8s/app/deployement-new.yaml;
         cat k8s/app/deployement-new.yaml
 
+  - id: "Pushing image"
+    name: 'gcr.io/cloud-builders/kubectl'
+    args:
+      - 'apply'
+      - 'f'
+      - 'k8s/app/deployement-new.yaml'
+
+
 
