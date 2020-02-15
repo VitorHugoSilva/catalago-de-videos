@@ -50,6 +50,9 @@ steps:
       - 'apply'
       - 'f'
       - 'k8s/app/deployement-new.yaml'
+    env:
+    - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
+    - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-docker-laravel'
 
 
 
