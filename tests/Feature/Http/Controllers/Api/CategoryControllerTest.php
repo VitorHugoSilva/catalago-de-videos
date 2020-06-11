@@ -11,10 +11,11 @@ use Illuminate\Support\Facades\Lang;
 use Tests\TestCase;
 use Tests\Traits\TestSaves;
 use Tests\Traits\TestValidations;
+use Tests\Traits\TestDestroy;
 
 class CategoryControllerTest extends TestCase
 {
-    use DatabaseMigrations, TestValidations, TestSaves;
+    use DatabaseMigrations, TestValidations, TestSaves, TestDestroy;
 
     protected $category;
     protected function setUp(): void
@@ -124,10 +125,7 @@ class CategoryControllerTest extends TestCase
 
     public function testDestroy()
     {
-        $response  = $this->json('DELETE', route('categories.destroy', ['category' => $this->category->id]));
-        $response->assertStatus(204);
-        $this->assertNull(Category::find($this->category->id));
-        $this->assertNotNull(Category::withTrashed()->find($this->category->id));
+        $this->assertDestroy($this->category->id);
     }
 
     protected function routeStore()
@@ -143,5 +141,10 @@ class CategoryControllerTest extends TestCase
     protected function model()
     {
         return Category::class;
+    }
+
+    protected function routeDestroy()
+    {
+        return route('categories.destroy', ['category' => $this->category->id]);
     }
 }

@@ -6,41 +6,26 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class CategoryController extends BasicCrudController
 {
+
     private $rules = [
         'name' => 'required|max:255',
+        'description' => 'nullable',
         'is_active' => 'boolean'
     ];
-    public function index()
+    protected function model()
     {
-        return Category::all();
+        return Category::class;
     }
 
-    public function store(Request $request)
+    protected function rolesStore()
     {
-        $this->validate($request, $this->rules);
-        $category = Category::create($request->all());
-        $category->refresh();
-        return $category;
+        return $this->rules;
     }
 
-    public function show(Category $category)
+    protected function rolesUpdate()
     {
-        return $category;
-    }
-
-    public function update(Request $request, Category $category)
-    {
-        $this->validate($request, $this->rules);
-        $category->update($request->all());
-        $category->refresh();
-        return $category;
-    }
-
-    public function destroy(Category $category)
-    {
-        $category->delete();
-        return response()->noContent();//204 - NO content
+        return $this->rules;
     }
 }
