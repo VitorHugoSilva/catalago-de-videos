@@ -6,12 +6,12 @@ services:
     restart: always
     volumes:
       - ./:/var/www/
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 40s ./.docker/app/entrypoint.sh
     depends_on:
       - db
       - redis
     networks:
       - network-app
-
   db:
     image: mysql:5.7
     restart: always
@@ -21,12 +21,12 @@ services:
     ports:
       - "3306:3306"
     environment:
-      - MYSQL_DATABASE=laravel
+      - MYSQL_DATABASE=code_micro_videos
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_USER=root
     volumes:
-    - "./.docker/dbdata:/var/lib/mysql"
-    - "./.docker/mysql:/docker-entrypoint-initdb.d"
+      - "./.docker/dbdata:/var/lib/mysql"
+      - "./.docker/mysql:/docker-entrypoint-initdb.d"
     networks:
       - network-app
 
