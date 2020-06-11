@@ -6,12 +6,6 @@ services:
     restart: always
     volumes:
       - ./:/var/www/
-#    entrypoint: dockerize -template ./.docker/app/.env:.env -wait tcp://db:3306 -timeout 40s ./.docker/app/entrypoint.sh
-#    environment:
-#      - DB_HOST=db
-#      - DB_DATABASE=laravel
-#      - DB_USERNAME=root
-#      - DB_PASSWORD=root
     depends_on:
       - db
       - redis
@@ -32,6 +26,7 @@ services:
       - MYSQL_USER=root
     volumes:
     - "./.docker/dbdata:/var/lib/mysql"
+    - "./.docker/mysql:/docker-entrypoint-initdb.d"
     networks:
       - network-app
 
@@ -41,12 +36,8 @@ services:
     tty: true
     ports:
       - "8000:80"
-    environment:
-      - PHP_FPM_HOST=app
-      - PHP_FPM_PORT=9000
     volumes:
       - ./:/var/www
-    entrypoint: dockerize -template /var/www/.docker/nginx/nginx.tmpl:/etc/nginx/conf.d/nginx.conf nginx -g "daemon off;"
     networks:
       - network-app
     depends_on:

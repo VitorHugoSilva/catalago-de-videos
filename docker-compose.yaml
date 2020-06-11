@@ -6,19 +6,12 @@ services:
     restart: always
     volumes:
       - ./:/var/www/
-    entrypoint: dockerize -template ./.docker/app/.env.testing:.env.testing -template ./.docker/app/.env:.env -wait tcp://db:3306 -timeout 40s ./.docker/app/entrypoint.sh
-    environment:
-      - _DB_HOST=db
-      - _DB_DATABASE=code_micro_videos
-      - _DB_USERNAME=root
-      - _DB_PASSWORD=root
-      - _TEST_DB_DATABASE=code_micro_videos_tests
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 40s ./.docker/app/entrypoint.sh
     depends_on:
       - db
       - redis
     networks:
       - network-app
-
   db:
     image: mysql:5.7
     restart: always
@@ -43,12 +36,8 @@ services:
     tty: true
     ports:
       - "8000:80"
-    environment:
-      - PHP_FPM_HOST=app
-      - PHP_FPM_PORT=9000
     volumes:
       - ./:/var/www
-    entrypoint: dockerize -template /var/www/.docker/nginx/nginx.tmpl:/etc/nginx/conf.d/nginx.conf nginx -g "daemon off;"
     networks:
       - network-app
     depends_on:
