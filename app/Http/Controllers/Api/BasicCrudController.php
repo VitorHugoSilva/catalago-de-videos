@@ -9,10 +9,8 @@ use Illuminate\Http\Request;
 abstract class BasicCrudController extends Controller
 {
     protected abstract function model();
-    private $rules = [
-        'name' => 'required|max:255',
-        'is_active' => 'boolean'
-    ];
+    protected abstract function rolesStore();
+
     public function index()
     {
         return $this->model()::all();
@@ -20,28 +18,16 @@ abstract class BasicCrudController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, $this->rules);
-        $category = Category::create($request->all());
-        $category->refresh();
-        return $category;
+        $validatedData = $this->validate($request, $this->rolesStore());
+        $obj = $this->model()::create($validatedData);
+        $obj->refresh();
+        return $obj;
     }
 
-    public function show(Category $category)
+    protected function findOrFail($id)
     {
-        return $category;
-    }
-
-    public function update(Request $request, Category $category)
-    {
-        $this->validate($request, $this->rules);
-        $category->update($request->all());
-        $category->refresh();
-        return $category;
-    }
-
-    public function destroy(Category $category)
-    {
-        $category->delete();
-        return response()->noContent();//204 - NO content
+        $model = $this->model();
+        $keyName = (new $model)->getRouteKeyName();
+        return $this->model()::where($keyName, $id)->firstOrFail();
     }
 }
