@@ -1,7 +1,7 @@
 steps:
   - id: "Rodando docker-compose"
     name: 'gcr.io/$PROJECT_ID/docker-compose:1.24.0'
-    args: ['-f', 'docker-compose.cloudbuild.yaml', 'up', '-d']
+    args: ['-f', 'docker-compose.prod.yaml', 'up', '-d']
 
   - id: "Rodando docker ps"
     name: 'gcr.io/cloud-builders/docker'
@@ -15,9 +15,17 @@ steps:
     name: 'gcr.io/cloud-builders/docker'
     args: ['exec', '-t', 'app', 'cp', '.env.example', '.env']
 
+  - id: "Copiando .env.testing"
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['exec', '-t', 'app', 'cp', '.env.testing.example', '.env.testing']
+
   - id: "Rodando key:generate"
     name: 'gcr.io/cloud-builders/docker'
     args: ['exec', '-t', 'app', 'php', '/var/www/artisan', 'key:generate']
+
+  - id: "Rodando key:generate testing"
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['exec', '-t', 'app', 'php', '/var/www/artisan', 'key:generate', '--env=testing']
 
   - id: "Rodando Migrações"
     name: 'gcr.io/cloud-builders/docker'
