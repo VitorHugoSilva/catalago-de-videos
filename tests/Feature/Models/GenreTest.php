@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Models;
+namespace Tests\Feature\Models;
 
 use App\Models\Category;
 use App\Models\Genre;
@@ -41,6 +41,7 @@ class GenreTest extends TestCase
             'name' => 'test 1',
             'is_active' => false
         ]);
+        $genre->refresh();
         $this->assertFalse($genre->is_active);
     }
 

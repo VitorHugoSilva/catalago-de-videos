@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Models;
+namespace Tests\Feature\Models;
 
 use App\Models\Category;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -42,6 +42,7 @@ class CategoryTest extends TestCase
             'name' => 'test 1',
             'description' => null
         ]);
+        $category->refresh();
         $this->assertNull($category->description);
 
         $category = Category::create([
@@ -54,6 +55,7 @@ class CategoryTest extends TestCase
             'name' => 'test 1',
             'is_active' => false
         ]);
+        $category->refresh();
         $this->assertFalse($category->is_active);
     }
 
@@ -71,7 +73,7 @@ class CategoryTest extends TestCase
         ];
 
         $category->update($data);
-
+        $category->refresh();
         foreach ($data as $key => $value) {
             $this->assertEquals($value, $category->{$key});
         }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Models;
+namespace Tests\Feature\Models;
 
 use App\Models\Category;
 use App\Models\CastMember;
@@ -59,7 +59,7 @@ class CastMemberTest extends TestCase
         ];
 
         $castMember->update($data);
-
+        $castMember->refresh();
         foreach ($data as $key => $value) {
             $this->assertEquals($value, $castMember->{$key});
         }
