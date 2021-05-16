@@ -20,11 +20,10 @@ services:
     ports:
       - "3306:3306"
     environment:
-      - MYSQL_DATABASE=code_micro_videos
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_USER=curso
       - MYSQL_PASSWORD=curso
-      volumes:
+      - MYSQL_USER=curso
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
       - "./.docker/dbdata:/var/lib/mysql"
       - "./.docker/mysql:/docker-entrypoint-initdb.d"
     networks:
