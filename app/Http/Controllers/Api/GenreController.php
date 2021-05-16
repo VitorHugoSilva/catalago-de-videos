@@ -38,7 +38,7 @@ class GenreController extends BasicCrudController
             $self->handleRelations($obj, $request);
             return $obj;
         });
-        $obj->refresh();
+        
         return $obj;
     }
 
