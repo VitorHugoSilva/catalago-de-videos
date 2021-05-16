@@ -31,6 +31,7 @@ class VideoController extends BasicCrudController
         $obj = \DB::transaction(function () use ($validatedData, $request, $self) {
             $obj = $this->model()::create($validatedData);
             $self->handleRelations($obj, $request);
+            $obj->refresh();
             return $obj;
         });
         $obj->refresh();
@@ -48,7 +49,6 @@ class VideoController extends BasicCrudController
             $self->handleRelations($obj, $request);
             return $obj;
         });
-        $obj->refresh();
         return $obj;
     }
 
