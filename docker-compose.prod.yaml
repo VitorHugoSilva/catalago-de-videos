@@ -22,8 +22,10 @@ services:
     environment:
       - MYSQL_DATABASE=code_micro_videos
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_USER=root
-    volumes:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=curso
+      - MYSQL_PASSWORD=curso
+      volumes:
       - "./.docker/dbdata:/var/lib/mysql"
       - "./.docker/mysql:/docker-entrypoint-initdb.d"
     networks:
